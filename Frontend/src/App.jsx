@@ -21,7 +21,10 @@ function App() {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/password" element={<Password />} />
+        <Route path="/password" element={<>
+                 <Navbar />
+                 <Password />
+               </>} />
         {/* Add more routes here as needed */}
         <Route path="*" element={<NotFound />} />
       </Routes>
