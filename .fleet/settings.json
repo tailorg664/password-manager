@@ -8,5 +8,8 @@
             "type": "add",
             "pluginName": "com.github.catppuccin.fleet"
         }
-    ]
+    ],
+    "nodejs.editor.formatOnSave.stylelint.glob": "{**/*,*}.{css, less, scss}",
+    "prettier.mode": "Auto",
+    "editor.guides": []
 }

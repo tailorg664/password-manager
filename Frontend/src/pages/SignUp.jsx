@@ -1,4 +1,6 @@
 import React from "react";
+import Input from "../components/Input.jsx";
+import Button from "../components/Button.jsx";
 
 function SignUp() {
   return (
@@ -13,34 +15,20 @@ function SignUp() {
           {/* Form */}
           <form action="submit" className="w-full h-full mt-8 ">
             {/* Email */}
-            <div className="flex flex-col items-center px-12">
-              <input
-                type="text"
-                placeholder="Email"
-                className="border-2 border-gray-300 rounded-lg p-2 mb-6 w-full"
-              />
+            <div className="flex flex-col items-center px-12 mb-8">
+              <Input type="text" placeholder="Email" width={360}/>
             </div>
             {/* Username */}
-            <div className="flex flex-col items-center px-12">
-              <input
-                type="text"
-                placeholder="Username"
-                className="border-2 border-gray-300 rounded-lg p-2 mb-6 w-full"
-              />
+            <div className="flex flex-col items-center px-12 mb-8">
+              <Input type="text" width={360} placeholder="Username"/>
             </div>
             {/* Password */}
-            <div className="flex flex-col items-center px-12">
-              <input
-                type="password"
-                placeholder="Password"
-                className="border-2 border-gray-300 rounded-lg p-2 mb-0 w-full"
-              />
+            <div className="flex flex-col items-center px-12 mb-8">
+              <Input type="password" width={360} placeholder="Password"/>
             </div>
             
-            <div className="flex flex-col items-center mt-4 px-12">
-              <button className=" bg-blue-700 text-white font-bold py-2 px-4 rounded-lg w-[300px]">
-                Sign Up
-              </button>
+            <div className="flex flex-col items-center  px-12">
+              <Button children={'SignUp'}/>
             </div>
           </form>
         </div>

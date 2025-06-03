@@ -1,5 +1,6 @@
 import React from "react";
-
+import Button from "../components/Button.jsx";
+import Input from "../components/Input.jsx";
 function LogIn() {
   return (
     <div className="login flex flex-col items-center justify-center h-screen bg-blue-200">
@@ -13,20 +14,12 @@ function LogIn() {
           {/* Form */}
           <form action="submit" className="w-full h-full mt-10 ">
             {/* Username */}
-            <div className="flex flex-col items-center px-12">
-              <input
-                type="text"
-                placeholder="Username"
-                className="border-2 border-gray-300 rounded-lg p-2 mb-10 w-full"
-              />
+            <div className="flex flex-col items-center px-12 mb-10">
+              <Input type="text" width={330} placeholder="Username"/>
             </div>
             {/* Password */}
             <div className="flex flex-col items-center px-12">
-              <input
-                type="password"
-                placeholder="Password"
-                className="border-2 border-gray-300 rounded-lg p-2 mb-0 w-full"
-              />
+              <Input type="password" width={330} placeholder="Password"/>
             </div>
             {/* Redirection */}
             <div className="scale-75 pt-2 font-medium">
@@ -36,9 +29,7 @@ function LogIn() {
               </a>
             </div>
             <div className="flex flex-col items-center mt-4 px-12">
-              <button className=" bg-blue-700 text-white font-bold py-2 px-4 rounded-lg w-[300px]">
-                Log In
-              </button>
+              <Button children={'Login'}/>
             </div>
           </form>
         </div>
