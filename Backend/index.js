@@ -10,7 +10,7 @@ connectDB()
     console.log("MongoDB connected successfully");
   })
   .catch((err) => {
-    console.log(err.message);
+    console.log("the error is: ",err.message);
   });
 const app = express();
 const server = http.createServer(app);

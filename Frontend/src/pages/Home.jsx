@@ -1,8 +1,13 @@
 import React from "react";
 import illustration from "/Vault-rafiki.svg";
+//import useAuthStore from "../store/useAuthStore.js";
 
 // import './home.css'
 function Home() {
+//  const {authUser} = useAuthStore()
+//  React.useEffect(
+//    authUser(),{authUser}
+//  )
   return (
     <div className="flex flex-col">
       {/* Header */}

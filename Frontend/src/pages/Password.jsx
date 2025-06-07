@@ -62,6 +62,7 @@ function Password(){
     </div>
     {/*Saved passwords*/}
       <div className="max-w-full mx-12 bg-white rounded-md p-4">
+        <div className={'font-medium text-4xl text-gray-500 pb-4'}>Saved Passwords</div>
         <div className="grid grid-cols-3 font-semibold border-b pb-2 mb-4">
           <span>Name</span>
           <span>URL/Link</span>

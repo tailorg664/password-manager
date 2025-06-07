@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { User } from '../models/user.js';
+import User from '../model/userModel.js';
 
 const authenticateToken = async (req, res, next) => {
       try {
@@ -25,4 +25,3 @@ const authenticateToken = async (req, res, next) => {
       }
 }
 export default authenticateToken;
-// This middleware function checks if the user is authenticated by verifying the JWT token.

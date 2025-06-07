@@ -48,10 +48,12 @@ const signUp = async (req, res) => {
     res
       .status(201)
       .cookie("token", token)
-      .json({
-        success: true,
-        message: "User created successfully",
-        user,
+      .json({token,
+        user:{
+          fullname: user?.fullname,
+          email:user?.email,
+          username:user?.username
+        }
       });
   } catch (error) {
     console.error(error);
@@ -107,10 +109,7 @@ const logout = async (req, res) => {
         message: "Cannot recognize userId, Please try again",
       });
     }
-    const user = await user
-      .findById(req.user._id)
-      .toString()
-      .replace(/^String\("(.*)"\)$/, "$1");
+    const user = req.user;
     
     if (!user) {
       return res.status(404).json({
@@ -153,4 +152,18 @@ const deleteAccount = async (req, res) => {
     });
   }
 };
-export { signUp, login, logout, deleteAccount };
+const checkAuth = async(req,res)=>{
+  try{
+    if(!req.user){
+      res.status(404).json({
+        success: false,
+        message:"User not found"
+      })
+    }
+    res.status(200).json(req.user)
+  }
+  catch (error){
+    console.log("the error occured while checking auth.",error)
+  }
+}
+export { signUp, login, logout, deleteAccount,checkAuth };
