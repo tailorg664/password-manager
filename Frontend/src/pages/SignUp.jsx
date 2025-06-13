@@ -13,12 +13,12 @@ function SignUp() {
     confirmPassword:""
   })
   const validateForm = () => {
-    if (!formData.email.trim()) alert("Email is required");
-    if (!/\S+@\S+\.\S+/.test(formData.email)) alert("Invalid email format");
-    if (!formData.password) alert("Password is required.");
-    if (formData.password.length < 6) alert("Password must be of atleast 6 digits.")
-    if (!formData.confirmPassword) alert("Confirm Password is required.");
-    if(formData.password !== formData.confirmPassword) alert("Confirm password doesnt matches password.")
+    if(!formData.email.trim() || !formData.password|| !formData.confirmPassword || !formData.username||!formData.fullname){
+       return console.log("Fill missing values")
+    }
+    if (!/\S+@\S+\.\S+/.test(formData.email)) return console.log("Invalid email format");
+    if (formData.password.length < 6) return console.log("Password must be of atleast 6 digits.")
+    if(formData.password !== formData.confirmPassword) return console.log("Confirm password doesnt matches password.")
     return true;
   };
   const handleChange = (e) => {
@@ -33,10 +33,10 @@ function SignUp() {
     e.preventDefault()
     const success = validateForm()
     if(success){
-      signup(formData).then(()=>{alert("User Logged in!")})
+      signup(formData).then(()=>{console.log("User signed up!")})
     }
     else{
-      alert("An error occured,Please try again!")
+      console.log("An error occured,Please try again!")
     }
   }
   return (
@@ -69,11 +69,38 @@ function SignUp() {
             <div className="flex flex-col items-center px-12 mb-8">
               <Input name={'confirmPassword'} type="password" width={360} placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange}/>
             </div>
-            <div className="flex flex-col items-center  px-12">
-              <Button type={"submit"} >{isSigningUp? (<>
-                <div className={'font-bold text-red-700'}>Loading</div>
-              </>):"Signup"}</Button>
+            <div className="flex flex-col items-center px-12">
+              <Button type="submit" disabled={isSigningUp}>
+                {isSigningUp ? (
+                  <div className="flex items-center gap-2">
+                    <svg
+                      className="animate-spin h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z"
+                      />
+                    </svg>
+                    <span>Loading</span>
+                  </div>
+                ) : (
+                  "Signup"
+                )}
+              </Button>
             </div>
+
           </form>
         </div>
         {/* Right side for design */}

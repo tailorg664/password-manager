@@ -1,169 +1,127 @@
+import bcrypt from "bcryptjs";
 import User from "../model/userModel.js";
 import { createToken } from "../utils/token.js";
 
+function formatUser(user) {
+  const { fullname, email, username, _id } = user;
+  return { id: _id, fullname, email, username };
+}
+
 const signUp = async (req, res) => {
-  const { fullname, email, username, password, confirmPassword } = req.body;
+  const { fullname, email, username, password } = req.body;
   try {
-    // Check if all fields are provided
-    if (!fullname || !email || !username || !password || !confirmPassword) {
-      return res.status(400).json({
-        success: false,
-        message: "Please fill all fields",
-      });
+    if (!fullname || !email || !username || !password) {
+      return res.status(400).json({ success: false, message: "Please fill all fields" });
     }
-    // Check if user already exists
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: "User already exists, please login",
-      });
+      return res.status(400).json({ success: false, message: "User already exists, please login" });
     }
 
-    // Check if password is at least 6 characters long
     if (password.length < 6) {
-      return res.status(400).json({
-        success: false,
-        message: "Password must be at least 6 characters long",
-      });
-    }
-    // Check if password and confirm password match
-    if (password !== confirmPassword) {
-      return res.status(400).json({
-        success: false,
-        message: "Passwords do not match",
-      });
+      return res.status(400).json({ success: false, message: "Password must be at least 6 characters long" });
     }
 
-    const user = await User.create({
-      fullname,
-      email,
-      username,
-      password,
-      confirmPassword,
-    });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({ fullname, email, username, password: hashedPassword });
+
     const token = createToken(user._id);
-    // Set token in cookie
-    user.token = token;
+
     res
       .status(201)
-      .cookie("token", token)
-      .json({token,
-        user:{
-          fullname: user?.fullname,
-          email:user?.email,
-          username:user?.username
-        }
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: false, // set true in prod with HTTPS
+        sameSite: "Lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      })
+      .json({
+        success: true,
+        message: "User signed up successfully",
+        token, // include for Postman/Mobile
+        user: formatUser(user),
       });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-      error: error.message,
-    });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
+
 const login = async (req, res) => {
   const { entry, password } = req.body;
   try {
-    // Check if all fields are provided
     if (!entry || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "Please fill all fields",
-      });
+      return res.status(400).json({ success: false, message: "Please fill all fields" });
     }
-    // Check if user exists
-    const doesUserExist = await User.findOne({
+
+    const user = await User.findOne({
       $or: [{ email: entry }, { username: entry }],
     });
-    if (!doesUserExist) {
-      return res.status(400).json({
-        success: false,
-        message: "User does not exist, please sign up",
-      });
+
+    if (!user) {
+      return res.status(400).json({ success: false, message: "User does not exist, please sign up" });
     }
-    // Check if password is correct
-    // Now login the user
-    res.status(200).json({
-      success: true,
-      message: "User logged in successfully",
-      user: doesUserExist,
-    });
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: "Incorrect password" });
+    }
+
+    const token = createToken(user._id);
+
+    res
+      .status(200)
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: false, // set true in prod with HTTPS
+        sameSite: "Lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      })
+      .json({
+        success: true,
+        message: "User logged in successfully",
+        token,
+        user: formatUser(user),
+      });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-      error: error.message,
-    });
+    res.status(500).json({ success: false, message: "Internal server error", error: error.message });
   }
 };
+
 const logout = async (req, res) => {
-  try{
-    console.log(req.user);
-    if(!req.user ||!req.user._id) {
-      return res.status(401).json({
-        success: false,
-        message: "Cannot recognize userId, Please try again",
-      });
-    }
-    const user = req.user;
-    
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found",
-      });
-    }
-    // Clear the token from the cookie
-    res.clearCookie("token", { httpOnly: true, secure: true });
+  try {
+    res.clearCookie("token", { httpOnly: true, secure: false, sameSite: "Lax" });
     res.status(200).json({
       success: true,
       message: "User logged out successfully",
     });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
-  catch (error) {}
 };
+
 const deleteAccount = async (req, res) => {
   try {
     const { userId } = req.params;
-    // Check if user exists
-    const doesUserExist = await User.findById(userId);
-    if (!doesUserExist) {
-      return res.status(400).json({
-        success: false,
-        message: "User does not exist",
-      });
-    }
-    // Delete user
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ success: false, message: "User not found" });
+
     await User.findByIdAndDelete(userId);
-    res.status(200).json({
-      success: true,
-      message: "User deleted successfully",
-    });
+    res.status(200).json({ success: true, message: "User deleted successfully" });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      success: false,
-      message: "Internal server error",
-      error: error.message,
-    });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
-const checkAuth = async(req,res)=>{
-  try{
-    if(!req.user){
-      res.status(404).json({
-        success: false,
-        message:"User not found"
-      })
-    }
-    res.status(200).json(req.user)
+
+const checkAuth = async (req, res) => {
+  try {
+    const user = req.user;
+    if (!user) return res.status(404).json({ success: false, message: "User not found" });
+
+    res.status(200).json({ success: true, user: formatUser(user) });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
-  catch (error){
-    console.log("the error occured while checking auth.",error)
-  }
-}
-export { signUp, login, logout, deleteAccount,checkAuth };
+};
+
+export { signUp, login, logout, deleteAccount, checkAuth, formatUser };

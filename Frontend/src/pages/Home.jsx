@@ -1,13 +1,11 @@
 import React from "react";
 import illustration from "/Vault-rafiki.svg";
+import {useNavigate} from "react-router-dom";
 //import useAuthStore from "../store/useAuthStore.js";
 
 // import './home.css'
 function Home() {
-//  const {authUser} = useAuthStore()
-//  React.useEffect(
-//    authUser(),{authUser}
-//  )
+  const navigate = useNavigate()
   return (
     <div className="flex flex-col">
       {/* Header */}
@@ -23,7 +21,8 @@ function Home() {
             saving them securely — that’s our mission. Strict authentication is
             our aim and zero data leaks is our strong point.
           </p>
-          <button className="mt-10 px-6 py-3 text-2xl font-bold rounded-3xl border-2 text-white bg-red-500 hover:bg-red-400 transition-colors duration-300 border-red-500 hover:border-red-400">
+          <button className="mt-10 px-6 py-3 text-2xl font-bold rounded-3xl border-2 text-white bg-red-500 hover:bg-red-400 transition-colors duration-300 border-red-500 hover:border-red-400"
+          onClick={()=> navigate("/signup")}>
             Sign Up
           </button>
         </div>
