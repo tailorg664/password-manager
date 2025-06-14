@@ -9,36 +9,41 @@ import Password from "./pages/Password.jsx";
 import useAuthStore from "./store/useAuthStore.js";
 import {useEffect} from "react";
 import {Navigate} from "react-router-dom";
-
+import Loading  from "./components/Loading.jsx";
 function App() {
-  const {isCheckingAuth,checkAuth,authUser} = useAuthStore();
+  const {isCheckingAuth,
+      isSigningUp,
+      isLoggingIn,
+      isLoggingOut,checkAuth,authUser} = useAuthStore();
+  const shouldShowLoader =
+    isCheckingAuth || isSigningUp || isLoggingIn || isLoggingOut;
   useEffect(()=>{
     checkAuth()
   },[])
-  if(isCheckingAuth){
-    return <div>loading</div>
-  }
   return (
-    <>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <Navbar />
-              <Home />
-            </>
-          }
-        />
-        <Route path="/login" element={!authUser?<Login />:<Navigate to={"/password"}/>} />
-        <Route path="/signup" element={!authUser?<SignUp />:<Navigate to={"/password"}/>} />
-        <Route path="/password" element={authUser?<>
-                 <Navbar />
-                 <Password />
-               </> :<Navigate to={"/login"} replace/>}/>
-        {/* Add more routes here as needed */}
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+    <>{shouldShowLoader && <Loading />}
+      <div className={`${shouldShowLoader ? "blur-sm pointer-events-none select-none" : ""}`}>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <Navbar />
+                <Home />
+              </>
+            }
+          />
+          <Route path="/login" element={!authUser?<Login />:<Navigate to={"/password"}/>} />
+          <Route path="/signup" element={!authUser?<SignUp />:<Navigate to={"/password"}/>} />
+          <Route path="/password" element={authUser?<>
+                   <Navbar />
+                   <Password />
+                 </> :<Navigate to={"/login"} replace/>}/>
+          {/* Add more routes here as needed */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
+
     </>
   );
 }

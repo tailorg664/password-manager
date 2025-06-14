@@ -5,7 +5,7 @@ import axiosInstance from "../axios/axios.js";
 const useAuthStore = create((set,get)=>({
      authUser:null,
      isCheckingAuth:false,
-     isLoggingIn:false,
+     isLoggingIn:false,isLoggingOut: false,
      isSigningUp:false,
      error:null,
       checkAuth: async () => {
@@ -43,7 +43,21 @@ const useAuthStore = create((set,get)=>({
        }
      },
 
-     logout:()=>{},
+     logout:async()=>{
+          set({ isLoggingOut: true, error: null });
+
+          try{
+               await axiosInstance.post('/auth/logout');
+               set({authUser:null,error:null})
+               console.log("✅ Logged out successfully");
+          }catch (err){
+               const errMsg = err?.response?.data?.message || "Logout failed";
+               set({ error: errMsg });
+               console.error("❌ Logout error:", errMsg);
+          }finally {
+               set({ isLoggingOut: false });
+             }
+     },
      signup: async (credentials)=>{
           set({isSigningUp:true})
           try{

@@ -10,14 +10,14 @@ function Navbar() {
       </button>
     )
   }
-  const {authUser}=useAuthStore()
+  const {authUser,logout,isLoggingOut}=useAuthStore()
   const label = authUser ? 'Logout' : 'Login';
 
   const handleClick = () => {
     if (label === 'Login') {
       navigate('/login');
     } else {
-      alert('lol');
+      logout()
     }
   };
   return (
