@@ -35,8 +35,9 @@ const savePassword = async (req, res) => {
   }
 };
 const getPassword = async (req, res) => {
-      const { id } = req.params;
+      const { userId } = req.params;
   try {
+       const user = req.user;
       if(!req.user) {
           return res.status(401).json({ message: "User not logged in, please log-in to use the service." });
       }
@@ -139,7 +140,10 @@ const generatePassword = async (req, res) => {
       if(!password) {
           return res.status(400).json({ message: "Please provide a valid length" });
       }
-      res.status(200).json({message: "Password generated: " ,password: password });
+      res.status(200)
+           .json({success:true,
+           message: "Password generated: " ,
+           password: password });
       
   } catch (error) {
       console.log(
