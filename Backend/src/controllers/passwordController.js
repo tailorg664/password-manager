@@ -1,58 +1,57 @@
-import User from "../model/userModel.js";
 import Password from "../model/passwordModel.js";
 import { encryptPassword, decryptPassword } from "../utils/passwordLocking.js";
-import generatePassword from "../utils/passwordGenerator.js";
+import passwordGenerator from "../utils/passwordGenerator.js";
 const savePassword = async (req, res) => {
-  const { title, password, username } = req.body;
+  const { name, url, username,password} = req.body;
   try {
       //condition to check if the user is logged in or not
-      if (!req.user) {
+      const user = req.user
+      if (!user) {
               return res.status(401).json({ message: "User not logged in, please log-in to use the service." });
       }
-      if (!title || !password || !username) {
+      if (!name || !password || !username || !url) {
           return res.status(400).json({ message: "Please fill all fields" });
       }
       // Check if password is strong enough
       if(password.length <6){
               return res.status(422).json({ message: "Password is too weak" });
       }
-    const hashedPassword = encryptPassword(password);
-    const newPassword = new Password({
-      site: title,
-      password: hashedPassword,
+    const newPassword = await Password.create({
+      name: name,
+      url:url,
+      password: encryptPassword(password),
       username: username,
-      userId: req.user._id,
+      userId: user._id,
     });
-    await newPassword.save();
+
     res.status(200).json({ message: "Password saved successfully" });
   } catch (error) {
     console.log(
       "Error occured while saving the password: ",
-      error.message,
-      " At: ",
-      error.title
+      error.message
     );
+    res.status(500).json({success:false,message:"Internal server error.",error:error.message})
   }
 };
 const getPassword = async (req, res) => {
-      const { userId } = req.params;
   try {
-       const user = req.user;
-      if(!req.user) {
+      const user = req.user;
+      if(!user) {
           return res.status(401).json({ message: "User not logged in, please log-in to use the service." });
       }
-      const password = await Password.findById(id);
-      if (!password) {
+      const passwords = await Password.find({userId : user.id});
+      if (!passwords) {
           return res.status(404).json({ message: "Password not found" });
       }
-      const decryptedPassword = decryptPassword(password.password);
-      res.status(200).json({ message: "Password fetched successfully", password: decryptedPassword });
+      const decryptedPassword = passwords.map(p=>({
+        ...p.toObject(),
+        password:decryptPassword(p.password)
+      }));
+      res.status(200).json({ message: "Passwords fetched successfully", data: decryptedPassword });
   } catch (error) {
       console.log(
         "Error occured while fetching the password: ",
-        error.message,
-        " At: ",
-        error.title
+        error.message
       );
       res.status(500).json({
         success: false,
@@ -136,7 +135,7 @@ const generatePassword = async (req, res) => {
       if(length < 6) {
           return res.status(422).json({ message: "Password is weak, would you like to have a strong password" });
       }
-      const password = generatePassword(length, options);
+      const password = passwordGenerator(length, options);
       if(!password) {
           return res.status(400).json({ message: "Please provide a valid length" });
       }

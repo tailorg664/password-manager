@@ -1,4 +1,4 @@
-function generatePassword(
+function passwordGenerator(
   length,
   options = { uppercase, lowercase, numbers, symbols }
 ) {
@@ -23,4 +23,4 @@ function generatePassword(
 
   return password;
 }
-export default generatePassword;
+export default passwordGenerator;
