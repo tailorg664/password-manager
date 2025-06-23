@@ -1,0 +1,63 @@
+<div className="w-[500px] bg-white border-4 border-dashed rounded-lg p-6 shadow-lg">
+        <form onSubmit={handleShowGeneratedPassword} >
+        <h3 className="text-2xl font-bold mb-4">Generate Password</h3>
+
+  {/* Your password generator logic here */}
+  <input
+    readOnly
+    value={generatedPassword || 'Your generated password will appear here'}
+    className="w-full text-center text-lg font-mono mb-4 p-2 border border-gray-300 rounded"
+  />
+  <Button children={'Generate now'} />
+
+  {/* Options like length, symbols, etc */}
+  <div className="mt-4 flex flex-col gap-2">
+    <label>
+      Length: {passwordData.length}
+      <input type="range" min="1" max="20"
+       defaultValue={passwordData.length} 
+       className="w-full" 
+       name='length' 
+       value={passwordData.length} 
+       onChange={handleGeneratedPasswordChange}/>
+    </label>
+    <div className="flex items-center gap-4">
+      <label>
+        <input
+          type="checkbox"
+          name="symbols"
+          value={passwordData.options.symbols}
+          onChange={handleGeneratedPasswordChange}
+        />{' '}
+        Symbols
+      </label>
+      <label>
+        <input
+          type="checkbox"
+          name="numbers"
+          value={passwordData.options.numbers}
+          onChange={handleGeneratedPasswordChange}
+        />{' '}
+        Numbers
+      </label>
+      <label>
+        <input
+          type="checkbox"
+          name="uppercase"
+          value={passwordData.options.uppercase}
+          onChange={handleGeneratedPasswordChange}
+        />{' '}
+        Uppercase
+      </label>
+      <label>
+        <input
+          type="checkbox"
+          name="lowercase"
+          value={passwordData.options.lowercase}
+          onChange={handleGeneratedPasswordChange}
+        />{' '}
+        Lowercase
+      </label>
+    </div>
+  </div>
+</form></div>

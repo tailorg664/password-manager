@@ -5,17 +5,24 @@ import {useNavigate} from "react-router-dom";
 
 // import './home.css'
 function Home() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  const handleNavigation=(e)=>{
+    const {name} = e.target;
+    if(name === "github") navigate('https://github.com/tailorg664');
+    if(name === "linkedin") navigate("https://linkedin.com/Gaurav-Tailor/")
+    else navigate("http://gmail.com")
+  }
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-center justify-between min-h-screen bg-blue-200 px-4 sm:px-16 py-6">
+      <div className="flex flex-col sm:flex-row items-center justify-between min-h-screen bg-gray-900 px-4 sm:px-16 py-6">
         {/* LEFT: Text */}
         <div className="sm:w-1/2 w-full mb-10 sm:mb-0">
-          <h1 className="text-4xl sm:text-6xl font-bold text-gray-800">
+          <h1 className="text-4xl sm:text-6xl font-bold text-blue-300">
             Manage your passwords securely and trustfully
           </h1>
-          <p className="pt-8 text-lg sm:text-xl font-mono">
+          <p className="pt-8 text-lg sm:text-xl font-mono text-blue-200">
             My Vault is a password management application for those who are very
             frustrated with lots of passwords. From generation of passwords to
             saving them securely — that’s our mission. Strict authentication is
@@ -37,7 +44,7 @@ function Home() {
         </div>
       </div>
       {/* Footer */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t-4 border-white bg-gray-700 p-4 text-gray-200 pb-20">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t-4 border-white bg-gray-900 p-4 text-gray-200 pb-20">
         <div className="left">
           <h1 className="text-2xl font-bold border-b-2 ">MyVault</h1>
           <div className=" pt-2 text-sm">
@@ -65,11 +72,11 @@ function Home() {
           <div className="font-bold text-2xl border-b-2">
             Sites and Contacts
           </div>
-          <div className="flex flex-row gap-2 pt-8 text-xl font-medium">
+          <div onClick={handleNavigation} name='github' className="flex flex-row gap-2 pt-8 text-xl font-medium">
             <img src="/github-mark/github-mark-white.png" className="w-8" />{" "}
             Github
           </div>
-          <div className="flex flex-row gap-2 pt-8 text-xl font-medium">
+          <div onClick={handleNavigation} name='linkedin' className="flex flex-row gap-2 pt-8 text-xl font-medium">
             <img src="/in-logo/InBug-White.png" className="w-8" />{" "}
             Linkedin
           </div>

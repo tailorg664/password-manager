@@ -1,92 +1,232 @@
-import React from 'react';
+import React from "react";
 import Input from "../components/Input.jsx";
 import Button from "../components/Button.jsx";
-function Password(){
+import usePasswordStore from "../store/usePasswordStore.js";
+import {
+  Trash,
+  Pencil,
+  ChevronRight,
+  ChevronDown,
+  Eye,
+  EyeOff,
+} from "lucide-react";
+function Password() {
+  const {
+    savedPasswords,
+    savePasswordData,
+    showSavedPasswords,
+    isSavingPassword,
+  } = usePasswordStore();
+  // Password saving functionality
+  const [formData, setFormData] = React.useState({
+    name: "",
+    username: "",
+    url: "",
+    password: "",
+  });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    savePasswordData(formData);
+    setFormData({
+      name: "",
+      username: "",
+      url: "",
+      password: "",
+    });
+  };
+  // Password generation functionality
+  // const [passwordData,setPasswordData] = React.useState({
+  //   length: 6,
+  //   options:{
+  //     uppercase:false,
+  //     lowercase:false,
+  //     numbers:false,
+  //     symbols:false
+  //   }
+  // })
+  // const handleGeneratedPasswordChange = (e) =>{
+  //     const {name,value,type,checked} = e.target;
+  //     if(type === 'checkbox'){
+  //       setPasswordData(prevState =>({
+  //         ...prevState,
+  //         options: {
+  //           ...prevState.options,
+  //           [name]: checked
+  //         }
+  //       }))
+  //     }
+  //     else{
+  //       setPasswordData(prevState => ({
+  //         ...prevState,
+  //         [name]: value
+  //       }));
+  //     }
+  // }
+  // const handleShowGeneratedPassword =(e)=>{
+  //   e.preventDefault();
+  //   generatePassword(passwordData);
+  //   setPasswordData({
+  //     length: 6,
+  //     options: {
+  //       uppercase: false,
+  //       lowercase: false,
+  //       numbers: false,
+  //       symbols: false
+  //     }
+  //   });
+  // }
+
+  //Data visibility functionality
+  const [expanded, setExpanded] = React.useState(true); // default to expanded
+  const toggleView = () => {
+    setExpanded((prev) => !prev);
+  };
+  React.useEffect(() => {
+    if (!isSavingPassword) {
+      showSavedPasswords();
+    }
+  }, [showSavedPasswords, isSavingPassword]);
+  //password visibility functionality
+  const [visiblePasswords, setVisiblePasswords] = React.useState({});
+  const togglePasswordVisibility = (index) => {
+    setVisiblePasswords((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
+
   return (
-    <div className='flex flex-col h-screen w-full'>
-      <div className="flex flex-col lg:flex-row justify-center items-start gap-12 p-10">
+    <div className="flex flex-col min-h-screen w-full p-10 space-y-8 bg-gray-900 text-amber-50">
       {/* Save Password Card */}
-      <div className="relative w-[600px] border-4 border-dashed rounded-md p-6">
+      <div className="relative max-w-3xl border-4  rounded-xl shadow-lg shadow-blue-300 hover:shadow-xl transition-shadow duration-1000  p-6">
         <h2 className="text-2xl font-bold mb-6">Save New Password</h2>
 
-        {/* Card Name */}
-        <div className="absolute top-4 right-6 flex items-center gap-2">
-          <label htmlFor="cardName" className="text-sm font-medium">Card Name:</label>
-          <input
-            type="text"
-            placeholder="e.g. Google"
-            className="border border-gray-400 rounded px-2 py-1 text-sm w-[160px]"
+        <form
+          onSubmit={handleSubmit}
+          className="grid grid-cols-[130px_1fr] gap-y-6 gap-x-4 mt-2 relative"
+        >
+          <div className="absolute top-[-60px] right-0 flex items-center gap-2">
+            <label htmlFor="cardName" className="text-sm font-medium">
+              Card Name:
+            </label>
+            <input
+              type="text"
+              id="cardName"
+              placeholder="e.g. Google"
+              className="border border-gray-400 rounded px-2 py-1 text-sm w-[160px]"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+            />
+          </div>
+
+          <label className="text-xl font-medium">Username:</label>
+          <Input
+            placeholder="username"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
           />
-        </div>
 
-        <form className="grid grid-cols-[130px_1fr] gap-y-6 gap-x-4 mt-2">
-          <label className={'text-xl font-medium'}>Username:</label>
-          <Input placeholder="username" />
+          <label className="text-xl font-medium">Link/URL:</label>
+          <Input
+            placeholder="default.com"
+            type="url"
+            name="url"
+            value={formData.url}
+            onChange={handleChange}
+          />
 
-          <label className={'text-xl font-medium'}>Link/URL:</label>
-          <Input placeholder="default.com" type="url" />
-
-
-          <label className={'text-xl font-medium'}>Password:</label>
-          <Input placeholder="********" type="password" />
+          <label className="text-xl font-medium">Password:</label>
+          <Input
+            placeholder="********"
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+          />
 
           <div></div>
-          <Button>Submit</Button>
+          <Button type="submit">Submit</Button>
         </form>
       </div>
-      {/* Password Generator Panel */}
-      <div className=" w-[500px] bg-white border-4 border-dashed rounded-lg p-6 shadow-lg">
-        <h3 className="text-2xl font-bold mb-4">Generate Password</h3>
 
-        {/* Your password generator logic here */}
-        <input
-          readOnly
-          value="A#sD9!eL7"
-          className="w-full text-center text-lg font-mono mb-4 p-2 border border-gray-300 rounded"
-        />
-        <Button children={'Generate now'}/>
+      {/* Saved Passwords Table */}
+      <div className="max-w-full  rounded-md p-4 shadow bg-gray-900">
+        <div
+          className="flex items-center space-x-2 mb-4 text-4xl font-medium text-gray-200 cursor-pointer"
+          onClick={toggleView}
+        >
+          <span>Saved Passwords</span>
+          {expanded ? (
+            <ChevronDown className="w-6 h-6 transition-transform duration-300" />
+          ) : (
+            <ChevronRight className="w-6 h-6 transition-transform duration-300" />
+          )}
+        </div>
 
-        {/* Options like length, symbols, etc */}
-        <div className="mt-4 flex flex-col gap-2">
-          <label>
-            Length:
-            <input type="range" min="8" max="32" className="w-full" />
-          </label>
-          <div className="flex items-center gap-4">
-            <label><input type="checkbox" /> Symbols</label>
-            <label><input type="checkbox" /> Numbers</label>
-            <label><input type="checkbox" /> Uppercase</label>
-          </div>
+        <div
+          className={`overflow-x-auto transition-all duration-500 overflow-hidden ${
+            expanded ? "max-h-screen" : "max-h-0"
+          }`}
+        >
+          <table className="min-w-full table-auto border ">
+            <thead className=" font-semibold">
+              <tr>
+                <th className="px-6 py-3 text-left">#</th>
+                <th className="px-6 py-3 text-left">Name</th>
+                <th className="px-6 py-3 text-left">Url</th>
+                <th className="px-6 py-3 text-left">Password</th>
+                <th className="px-6 py-3 text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {savedPasswords.map((e, index) => (
+                <tr
+                  key={index}
+                  className="border-b bg-gray-800 hover:bg-gray-900 transition-colors duration-200"
+                >
+                  <td className="px-6 py-3">{index + 1}</td>
+                  <td className="px-6 py-3">{e.name}</td>
+                  <td className="px-6 py-3">{e.url}</td>
+                  <td className="px-6 py-3 flex items-center gap-2">
+                    <span>
+                      {visiblePasswords[index] ? e.password : "•••••••••••"}
+                    </span>
+                    <button
+                      onClick={() => togglePasswordVisibility(index)}
+                      className="text-blue-500 hover:text-blue-700"
+                    >
+                      {visiblePasswords[index] ? (
+                        <EyeOff size={18} />
+                      ) : (
+                        <Eye size={18} />
+                      )}
+                    </button>
+                  </td>
+
+                  <td className="px-6 py-3">
+                    <button className="text-gray-500 hover:text-gray-700 mr-2">
+                      <Pencil />
+                    </button>
+                    <button className="text-red-500 hover:text-red-700">
+                      <Trash />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
-    {/*Saved passwords*/}
-      <div className="max-w-full mx-12 bg-white rounded-md p-4">
-        <div className={'font-medium text-4xl text-gray-500 pb-4'}>Saved Passwords</div>
-        <div className="grid grid-cols-3 font-semibold border-b pb-2 mb-4">
-          <span>Name</span>
-          <span>URL/Link</span>
-          <span>Password</span>
-        </div>
-        {/* Sample Data - Replace with Dynamic Rendering */}
-        {[1, 2, 3].map((item, index) => (
-          <div
-            key={index}
-            className="grid grid-cols-3 items-center bg-gray-100 p-3 mb-2 rounded-md"
-          >
-            <div className="flex items-center">
-              <span className="w-6 h-6 flex items-center justify-center text-sm font-semibold bg-gray-200 rounded-full mr-2">
-                {index+1}
-              </span>
-              Figma
-            </div>
-            <span>https://figma.com</span>
-            <span>************</span>
-          </div>
-        ))}
-      </div>
-    </div>
-
   );
 }
 
