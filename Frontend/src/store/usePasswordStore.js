@@ -1,6 +1,7 @@
 import {create} from 'zustand'
 import axiosInstance from "../axios/axios.js";
 
+
 const usePasswordStore = create((set)=>({
      savedPasswords:[],
      // generatedPassword:null,
@@ -29,7 +30,29 @@ const usePasswordStore = create((set)=>({
           } catch (error) {
                console.log("Error while showing passwords: ",error.message);
           }
-     }
+     },
+     deletePassword:async(id)=>{
+          try {
+               await axiosInstance.delete(`/home/delete-password/${id}`, { data: { id } })
+               set((state) => ({
+                 savedPasswords: state.savedPasswords.filter((p) => p._id !== id),
+               }));
+          } catch (error) {
+               console.log("Error while deleting password: ",error.message);
+          }
+     },
+     updatePassword:async(id,formData)=>{
+          try {
+               await axiosInstance.put(`/home/update-password/${id}`,formData)
+               set((state) => ({
+                    savedPasswords: state.savedPasswords.map((p) =>
+                         p._id === id ? { ...p, ...formData } : p
+                    ),
+               }));
+          } catch (error) {
+               console.log("Error while updating password: ",error.message);
+          }
+     },
 
 }))
 export default  usePasswordStore

@@ -107,7 +107,6 @@ const deletePassword = async (req, res) => {
 const updatePassword = async (req, res) => {
   const { id } = req.params;
   const user = req.user;
-  const { password } = req.body;
   try {
     if (!user) {
       return res
@@ -119,15 +118,9 @@ const updatePassword = async (req, res) => {
     if (!id) {
       return res.status(400).json({ message: "No id found" });
     }
-    if (!password) {
-      return res.status(400).json({ message: "Please provide a password" });
-    }
-    if (password.length < 6) {
-      return res.status(422).json({ message: "Password is too weak" });
-    }
 
-    const hashedPassword = encryptPassword(password);
-    await Password.findByIdAndUpdate(id, { password: hashedPassword });
+    const hashedPassword = encryptPassword(req.body.password);
+    await Password.findByIdAndUpdate(id, { ...req.body,password: hashedPassword },{new: true});
     res.status(200).json({ message: "Password updated successfully" });
   } catch (error) {
     console.log("Error occured while updating the password: ", error.title);
