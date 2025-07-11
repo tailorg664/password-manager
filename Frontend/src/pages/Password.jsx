@@ -125,7 +125,7 @@ function Password() {
     setIsEditModalOpen(false);
   }
   return (
-    <div className="flex flex-col items-center min-h-screen w-full p-10 space-y-8 bg-slate-900 text-slate-50">
+    <div className="flex flex-col items-center min-h-screen w-full p-10 space-y-8  bg-radial from-black to-slate-800 text-slate-50">
       {/* Save Password Card */}
       <div className="relative w-[600px] bg-slate-800 border border-slate-700 rounded-2xl shadow-xl p-8 transition">
         <h2 className="text-2xl font-bold text-slate-50 mb-8">
@@ -287,9 +287,7 @@ function Password() {
             <h2 className="text-xl font-semibold mb-4 text-gray-800">
               Edit Password
             </h2>
-            <form
-              onSubmit={handleEditPassword}
-            >
+            <form onSubmit={handleEditPassword}>
               <input
                 type="text"
                 value={editData.name}
