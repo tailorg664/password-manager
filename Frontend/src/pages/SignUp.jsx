@@ -3,7 +3,7 @@ import Input from "../components/Input.jsx";
 import Button from "../components/Button.jsx";
 import useAuthStore from "../store/useAuthStore.js";
 //import {useNavigate} from "react-router-dom";
-function SignUp() {
+function Signup() {
   const {signup,isSigningUp}= useAuthStore();
   const [formData,setFormData]=useState({
     fullname:"",
@@ -110,4 +110,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default Signup;

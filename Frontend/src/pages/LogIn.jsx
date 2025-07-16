@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import Button from "../components/Button.jsx";
 import Input from "../components/Input.jsx";
 import useAuthStore from "../store/useAuthStore.js";
-function LogIn() {
+function Login() {
   const {isLoggingIn,login,}=useAuthStore()
   const [formData,setFormData]= useState({
     entry :"",
@@ -108,4 +108,4 @@ function LogIn() {
   );
 }
 
-export default LogIn;
+export default Login;
