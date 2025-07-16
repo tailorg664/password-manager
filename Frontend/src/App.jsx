@@ -1,5 +1,5 @@
 import "./App.css";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Home from "./pages/Home.jsx";
 import Navbar from "./components/Navbar.jsx";
 import NotFound from "./components/NotFound.jsx";
@@ -8,7 +8,6 @@ import Signup from "./pages/Signup.jsx";
 import Password from "./pages/Password.jsx";
 import useAuthStore from "./store/useAuthStore.js";
 import {useEffect} from "react";
-import {Navigate} from "react-router-dom";
 import Loading  from "./components/Loading.jsx";
 function App() {
   const {isCheckingAuth,
