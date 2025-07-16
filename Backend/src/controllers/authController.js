@@ -32,7 +32,7 @@ const signUp = async (req, res) => {
       .status(201)
       .cookie("token", token, {
         httpOnly: true,
-        secure: false, // set true in prod with HTTPS
+        secure: true, // set true in prod with HTTPS
         sameSite: "Lax",
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
       })
@@ -73,7 +73,7 @@ const login = async (req, res) => {
       .status(200)
       .cookie("token", token, {
         httpOnly: true,
-        secure: false, // set true in prod with HTTPS
+        secure: true, // set true in prod with HTTPS
         sameSite: "Lax",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })

@@ -17,10 +17,12 @@ const server = http.createServer(app);
 
 app.use(express.json());
 app.use(cookieParser())
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: "https://password-manager-mzfk.vercel.app/",
+    credentials: true,
+  })
+);
 // Routes
 import authRoutes from "./src/routes/authRoute.js";
 import passwordRoute from "./src/routes/passwordRoute.js";
