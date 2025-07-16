@@ -1,6 +1,6 @@
 import React from "react";
 import Lottie from "lottie-react";
-import loadingAnimation from "../assets/loading.json"; // adjust path
+import loadingAnimation from "../assets/Loading.json"; // adjust path
 function Loading(){
      return (
           <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm bg-black/30">
