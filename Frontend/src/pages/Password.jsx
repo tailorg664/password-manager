@@ -125,9 +125,9 @@ function Password() {
     setIsEditModalOpen(false);
   }
   return (
-    <div className="flex flex-col items-center min-h-screen w-full p-10 space-y-8  bg-radial from-black to-slate-800 text-slate-50">
+    <div className="flex flex-col items-center min-h-screen w-full p-10  py-20 space-y-8  bg-radial from-black to-slate-800 text-slate-50 animate-gradient-password">
       {/* Save Password Card */}
-      <div className="relative w-[600px] bg-slate-800 border border-slate-700 rounded-2xl shadow-xl p-8 transition">
+      <div className="relative w-[600px] bg-slate-800 border border-slate-700 rounded-2xl shadow-xl  p-8 transition">
         <h2 className="text-2xl font-bold text-slate-50 mb-8">
           Save New Password
         </h2>

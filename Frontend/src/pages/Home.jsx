@@ -6,45 +6,60 @@ import { useNavigate } from "react-router-dom";
 // import './home.css'
 function Home() {
   const navigate = useNavigate();
-
-  const handleNavigation = (e) => {
-    const { name } = e.target;
-    if (name === "github") navigate("https://github.com/tailorg664");
-    if (name === "linkedin") navigate("https://linkedin.com/Gaurav-Tailor/");
-    else navigate("http://gmail.com");
-  };
-  return (
-    <div className="flex flex-col">
-      {/* Header */}
-      <div className="flex min-h-screen flex-col items-center justify-between bg-black/95 px-4 py-6 sm:flex-row sm:px-16">
-        {/* LEFT: Text */}
-        <div className="mb-10 w-full sm:mb-0 sm:w-1/2">
-          <h1 className="bg-gradient-to-r from-pink-500 to-violet-500 bg-clip-text text-4xl font-bold text-transparent sm:text-6xl animate-gradient-x">
-            Manage your passwords securely and trustfully
-          </h1>
-          <p className="ml-4 pt-8 font-mono text-lg text-blue-200 sm:text-xl">
-            My Vault is a password management application for those who are very
-            frustrated with lots of passwords. From generation of passwords to
-            saving them securely — that’s our mission. Strict authentication is
-            our aim and zero data leaks is our strong point.
-          </p>
-          <button
-            className="mt-10 rounded-3xl border-2 border-blue-500 bg-blue-500 px-6 py-3 text-2xl font-bold text-white transition-colors duration-300 hover:border-blue-400 hover:bg-blue-400"
-            onClick={() => navigate("/signup")}
-          >
-            Sign Up
-          </button>
-        </div>
-
-        {/* RIGHT: Image */}
-        <div className="flex w-full justify-center sm:w-1/2">
-          <img
-            src={illustration}
-            alt="Security illustration"
-            className="h-auto max-w-[500px]"
-          />
+  function Card({ children }) {
+    return (
+      <div className="animate-gradient-password flex h-20 w-80 flex-row items-center rounded-[40px] border-4 border-red-200 bg-radial from-black to-blue-600 p-2">
+        <div className="border-2animate-gradient-x h-13 w-13 rounded-4xl border-amber-100 bg-gradient-to-r from-pink-500 to-violet-500"></div>
+        <div className="ml-6 text-2xl font-medium text-gray-300">
+          {children}
         </div>
       </div>
+    );
+  }
+  return (
+    <div className="flex flex-col ">
+      {/* Header */}
+      <div className="animate-gradient-password bg-radial from-black to-slate-700">
+        <div className="flex min-h-screen flex-col items-center bg-radial px-4 py-32 text-slate-50 sm:flex-row sm:content-center sm:px-16 sm:py-0">
+          {/* LEFT: Text */}
+          <div className="mb-10 w-full sm:mb-0 sm:w-1/2">
+            <h1 className="animate-gradient-x max-w-[800px] min-w-60 bg-gradient-to-r from-pink-500 to-violet-500 bg-clip-text text-3xl font-bold text-wrap text-transparent sm:text-xl md:text-6xl">
+              Manage your passwords securely and trustfully
+            </h1>
+            <p className="font-segoe text-none ml-4 max-w-[800px] pt-8 text-blue-200 sm:text-xl">
+              My Vault is your trusted password manager — from generating
+              strong, unique passwords to storing them securely, we’ve got you
+              covered. With robust authentication and a zero data-leak policy,
+              your privacy is always our top priority.
+            </p>
+            <button
+              className="mt-10 animate-[wiggle_1s_ease-in-out_infinite] rounded-3xl border-2 border-blue-500 bg-blue-500 px-6 py-3 text-2xl font-bold text-gray-200 transition-all duration-300 hover:border-purple-500 hover:bg-purple-500 hover:shadow-md hover:shadow-purple-300"
+              onClick={() => navigate("/signup")}
+            >
+              Sign Up
+            </button>
+          </div>
+
+          {/* RIGHT: Image */}
+          <div className="flex w-full justify-center sm:w-1/2">
+            <img
+              src={illustration}
+              alt="Security illustration"
+              className="h-auto max-w-[500px]"
+            />
+          </div>
+        </div>
+        {/* Middle */}
+        <div className="flex flex-row justify-center pb-10 font-mono text-5xl text-pink-300 ">
+          Our services Provides...
+        </div>
+        <div className="flex  h-96 flex-col items-center justify-around gap-y-3 sm:h-64 sm:flex-row sm:items-baseline-last sm:gap-0">
+          <Card>Protection</Card>
+          <Card>Crypto Locking</Card>
+          <Card>Full Control</Card>
+        </div>
+      </div>
+
       {/* Footer */}
       <div className="grid grid-cols-1 gap-4 border-t-4 border-white bg-gray-900 p-4 pb-20 text-gray-200 sm:grid-cols-2">
         <div className="left">
@@ -74,21 +89,23 @@ function Home() {
           <div className="border-b-2 text-2xl font-bold">
             Sites and Contacts
           </div>
-          <div
-            onClick={handleNavigation}
+          <a
+            href="https://github.com/tailorg664"
             name="github"
+            target="_blank"
             className="flex flex-row gap-2 pt-8 text-xl font-medium"
           >
             <img src="/github-mark/github-mark-white.png" className="w-8" />{" "}
             Github
-          </div>
-          <div
-            onClick={handleNavigation}
+          </a>
+          <a
+            href="https://linkedin.com/Gaurav-Tailor/"
             name="linkedin"
+            target="_blank"
             className="flex flex-row gap-2 pt-8 text-xl font-medium"
           >
             <img src="/in-logo/InBug-White.png" className="w-8" /> Linkedin
-          </div>
+          </a>
         </div>
       </div>
     </div>

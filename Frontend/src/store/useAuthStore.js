@@ -2,7 +2,7 @@ import {create} from "zustand";
 import axiosInstance from "../axios/axios.js";
 
 const useAuthStore = create((set,get)=>({
-     authUser:null,
+     authUser:null,//imp
      isCheckingAuth:false,
      isLoggingIn:false,isLoggingOut: false,
      isSigningUp:false,
@@ -74,3 +74,6 @@ const useAuthStore = create((set,get)=>({
      }
 }))
 export default  useAuthStore;
+
+//user data: same format:
+// { data:{_id: '12345', name: 'John Doe', email:'tailorg '}}

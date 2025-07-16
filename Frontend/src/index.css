@@ -14,9 +14,26 @@
       animation: gradient-x 5s ease infinite;
       background-size: 200% 200%;
   }
+  .animate-gradient-password {
+      animation: gradient-x 6s ease-in infinite;
+      background-size: 200% 200%;
+      
+  }
+  
 }
 
 @theme {
   --color-mera: #4a90e2;
   --color-secondary: #50e3c2;
+  --animate-wiggle: wiggle 1s ease-in-out infinite;
+  @keyframes wiggle {
+    0%,
+    100% {
+      transform: rotate(-3deg);
+    }
+    50% {
+      transform: rotate(3deg);
+    }
+  }
+
 }

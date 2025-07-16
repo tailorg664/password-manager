@@ -28,66 +28,81 @@ function LogIn() {
   }
 
   return (
-    <div className="login flex flex-col items-center justify-center h-screen bg-blue-200">
-      <div className="h-[500px] w-[600px] max-md:w-[500px]  max-sm:w-[350px] flex flex-row">
+    <div className="login animate-gradient-password flex h-screen flex-col items-center justify-center bg-radial from-black to-slate-800 text-slate-50">
+      <div className="flex h-[500px] w-[600px] flex-row max-md:w-[500px] max-sm:w-[350px]">
         {/* Left side for form */}
-        <div className="left bg-blue-50 h-full w-full min-sm:w-3/4 flex flex-col items-center rounded-bl-4xl">
+        <div className="left flex h-full w-full flex-col items-center rounded-bl-4xl bg-gray-800 min-sm:w-3/4">
           {/* Logo */}
-          <h1 className="text-[50px] text-blue-700 font-bold tracking-wide  pt-8">
+          <h1 className="pt-8 text-[50px] font-bold tracking-wide text-blue-400">
             Login
           </h1>
           {/* Form */}
-          <form onSubmit={handleSubmit}  className="w-full h-full mt-10 ">
+          <form onSubmit={handleSubmit} className="mt-10 h-full w-full">
             {/* Username or Email */}
-            <div className="flex flex-col items-center px-12 mb-10">
-              <Input name={"entry"} type="text" width={330} value={formData.entry} onChange={handleChange} placeholder="Username"/>
+            <div className="mb-10 flex flex-col items-center px-12">
+              <Input
+                name={"entry"}
+                type="text"
+                width={330}
+                value={formData.entry}
+                onChange={handleChange}
+                placeholder="Username"
+              />
             </div>
             {/* Password */}
             <div className="flex flex-col items-center px-12">
-              <Input name={'password'} value={formData.password} onChange={handleChange} type="password" width={330} placeholder="Password"/>
+              <Input
+                name={"password"}
+                value={formData.password}
+                onChange={handleChange}
+                type="password"
+                width={330}
+                placeholder="Password"
+              />
             </div>
             {/* Redirection */}
             <div className="scale-75 pt-2 font-medium">
               Didn't have an account?
               <a href="/signup" className="text-blue-700">
-                {" "}Sign Up
+                {" "}
+                Sign Up
               </a>
             </div>
-            <div className="flex flex-col items-center mt-4 px-12">
-              <Button type={'submit'} disabled={isLoggingIn}>
+            <div className="mt-4 flex flex-col items-center px-12">
+              <Button type={"submit"} disabled={isLoggingIn}>
                 {isLoggingIn ? (
-                    <div className="flex items-center gap-2">
-                      <svg
-                        className="animate-spin h-5 w-5 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        />
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z"
-                        />
-                      </svg>
-                      <span>Loading</span>
-                    </div>
-                  ) : (
-                    "Login"
-                  )}
+                  <div className="flex items-center gap-2">
+                    <svg
+                      className="h-5 w-5 animate-spin text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z"
+                      />
+                    </svg>
+                    <span>Loading</span>
+                  </div>
+                ) : (
+                  "Login"
+                )}
               </Button>
             </div>
           </form>
         </div>
         {/* Right side for design */}
-        <div className="right h-full w-0 min-sm:w-1/4 bg-blue-700 rounded-tr-4xl"></div>
+        <div className="right h-full w-0 rounded-tr-4xl bg-blue-700 min-sm:w-1/4"></div>
       </div>
     </div>
   );
