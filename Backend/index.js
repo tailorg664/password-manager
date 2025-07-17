@@ -14,12 +14,12 @@ connectDB()
   });
 const app = express();
 const server = http.createServer(app);
-
+const origin = process.env.CORS_ORIGIN
 app.use(express.json());
 app.use(cookieParser())
 app.use(
   cors({
-    origin: "https://password-manager-mzfk.vercel.app",
+    origin: `${origin}`,
     credentials: true,
   })
 );
