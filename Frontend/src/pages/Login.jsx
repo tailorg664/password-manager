@@ -1,30 +1,33 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+
 import Button from "../components/Button.jsx";
 import Input from "../components/Input.jsx";
 import useAuthStore from "../store/useAuthStore.js";
 function Login() {
-  const {isLoggingIn,login,}=useAuthStore()
-  const [formData,setFormData]= useState({
-    entry :"",
-    password:""
-  })
-  const handleChange=(e)=>{
-    const {name,value} = e.target
-    setFormData(
-      {...formData,
-        [name]:value
-      })
-  }
-  const validataForm =()=>{
-    if(!formData.entry || !formData.password) return console.log("Fill missing values")
-    if (formData.password.length < 6) return console.log("Password must be of atleast 6 digits.")
+  const { isLoggingIn, login } = useAuthStore();
+  const [formData, setFormData] = useState({
+    entry: "",
+    password: "",
+  });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+  const validataForm = () => {
+    if (!formData.entry || !formData.password)
+      return console.log("Fill missing values");
+    if (formData.password.length < 6)
+      return console.log("Password must be of atleast 6 digits.");
     return true;
-  }
-  function handleSubmit(e){
-    e.preventDefault()
-    const success = validataForm()
-    if(success) login(formData).then(()=>console.log("User logged in!"))
-    else{console.log("Problem occured while login. Please try again!")}
+  };
+  function handleSubmit(e) {
+    e.preventDefault();
+    const success = validataForm();
+    if (success) login(formData).then(() => console.log("User logged in!"));
+    else {
+      console.log("Problem occured while login. Please try again!");
+    }
   }
 
   return (
@@ -63,10 +66,10 @@ function Login() {
             {/* Redirection */}
             <div className="scale-75 pt-2 font-medium">
               Didn't have an account?
-              <a href="/signup" className="text-blue-700">
+              <Link to="/signup" className="text-blue-700">
                 {" "}
                 Sign Up
-              </a>
+              </Link>
             </div>
             <div className="mt-4 flex flex-col items-center px-12">
               <Button type={"submit"} disabled={isLoggingIn}>
