@@ -29,6 +29,7 @@ import passwordRoute from "./src/routes/passwordRoute.js";
 app.use("/api/auth", authRoutes);
 app.use("/api/home",passwordRoute);
 //listening to server
-server.listen(5000, () => {
-  console.log("Server is running on port 5000");
+const PORT = process.env.PORT;
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
