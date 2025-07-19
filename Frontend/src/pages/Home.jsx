@@ -17,16 +17,16 @@ function Home() {
     );
   }
   return (
-    <div className="flex flex-col ">
+    <div className="flex flex-col">
       {/* Header */}
       <div className="animate-gradient-password bg-radial from-black to-slate-700">
         <div className="flex min-h-screen flex-col items-center bg-radial px-4 py-32 text-slate-50 sm:flex-row sm:content-center sm:px-16 sm:py-0">
           {/* LEFT: Text */}
-          <div className="mb-10 w-full sm:mb-0 sm:w-1/2">
-            <h1 className="animate-gradient-x max-w-[800px] min-w-60 bg-gradient-to-r from-pink-500 to-violet-500 bg-clip-text text-3xl font-bold text-wrap text-transparent sm:text-xl md:text-6xl">
+          <div className="flex w-full flex-col items-center text-center sm:w-1/2 sm:items-start sm:text-left">
+            <h1 className="animate-gradient-x max-w-[800px] min-w-60 bg-gradient-to-r from-pink-500 to-violet-500 bg-clip-text text-3xl font-bold text-transparent sm:text-xl md:text-6xl">
               Manage your passwords securely and trustfully
             </h1>
-            <p className="font-segoe text-none ml-4 max-w-[800px] pt-8 text-blue-200 sm:text-xl">
+            <p className="font-segoe max-w-[800px] pt-8 text-blue-200 sm:text-xl">
               My Vault is your trusted password manager — from generating
               strong, unique passwords to storing them securely, we’ve got you
               covered. With robust authentication and a zero data-leak policy,
@@ -50,10 +50,10 @@ function Home() {
           </div>
         </div>
         {/* Middle */}
-        <div className="flex flex-row justify-center pb-10 font-mono text-5xl text-pink-300 ">
+        <div className="flex flex-row justify-center pb-10 text-2xl font-medium text-purple-400 sm:text-5xl">
           Our services Provides...
         </div>
-        <div className="flex  h-96 flex-col items-center justify-around gap-y-3 sm:h-64 sm:flex-row sm:items-baseline-last sm:gap-0">
+        <div className="flex h-96 scale-75 flex-col items-center justify-around gap-y-3 sm:h-64 sm:scale-100 sm:flex-row sm:items-baseline-last sm:gap-0">
           <Card>Protection</Card>
           <Card>Crypto Locking</Card>
           <Card>Full Control</Card>
