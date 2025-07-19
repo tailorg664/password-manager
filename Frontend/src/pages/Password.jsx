@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import Input from "../components/Input.jsx";
 import Button from "../components/Button.jsx";
 import usePasswordStore from "../store/usePasswordStore.js";
@@ -17,7 +17,7 @@ function Password() {
     showSavedPasswords,
     isSavingPassword,
     deletePassword,
-    updatePassword
+    updatePassword,
   } = usePasswordStore();
   // Password saving functionality
   const [formData, setFormData] = React.useState({
@@ -118,26 +118,41 @@ function Password() {
     url: "",
     password: "",
   });
-  const handleEditPassword = (e) =>{
+  const handleEditPassword = (e) => {
     e.preventDefault();
     // Here you would typically send the updated data to your backend
     updatePassword(editData._id, editData);
     setIsEditModalOpen(false);
-  }
+  };
+  const cardRef = React.useRef(null);
+  const handleMouseMove = (e) => {
+    const card = cardRef.current;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    card.style.setProperty("--x", `${x}px`);
+    card.style.setProperty("--y", `${y}px`);
+  };
+
   return (
-    <div className="flex flex-col items-center min-h-screen w-full p-10  py-20 space-y-8  bg-radial from-black to-slate-800 text-slate-50 animate-gradient-password">
+    <div className="animate-gradient-password flex min-h-screen w-full flex-col items-center space-y-8 bg-radial from-black to-slate-800 p-10 py-30 text-slate-50">
       {/* Save Password Card */}
-      <div className="relative w-[600px] bg-slate-800 border border-slate-700 rounded-2xl shadow-xl  p-8 transition">
-        <h2 className="text-2xl font-bold text-slate-50 mb-8">
+      <div
+        className="mx-auto w-full max-w-md rounded-2xl border border-slate-700 p-6 shadow-xl inset-shadow-custom transition sm:p-8"
+        ref={cardRef}
+        style={{
+          background: `radial-gradient(600px circle at var(--x, 50%) var(--y, 50%), rgba(0,0,240,0.3), transparent 70%)`,
+        }}
+        onMouseMove={handleMouseMove}
+      >
+        <h2 className="mb-6 text-3xl font-light text-slate-50 sm:mb-8">
           Save New Password
         </h2>
 
-        <form
-          onSubmit={handleSubmit}
-          className="grid grid-cols-[130px_1fr] gap-y-6 gap-x-4 mt-2 relative"
-        >
-          {/* Card Name Field at Top Right */}
-          <div className="absolute top-[-60px] right-0 flex items-center gap-2">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          {/* Card Name Field */}
+          <div className="flex flex-col gap-2">
             <label
               htmlFor="cardName"
               className="text-sm font-medium text-slate-300"
@@ -148,84 +163,87 @@ function Password() {
               type="text"
               id="cardName"
               placeholder="e.g. Google"
-              className="border border-slate-600 rounded-md px-3 py-1 text-sm bg-slate-700 text-slate-100 placeholder-slate-400 w-[160px] focus:outline-none focus:ring-2 focus:ring-blue-500"
               name="name"
               value={formData.name}
               onChange={handleChange}
+              className="rounded-lg border border-slate-700 bg-transparent px-3 py-2 text-sm text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
           {/* Username */}
-          <label className="text-lg font-medium text-slate-200">
-            Username:
-          </label>
-          <Input
-            placeholder="username"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            className="px-3 bg-slate-700 text-slate-100 placeholder-slate-400 border border-slate-600 focus:ring-2 focus:ring-blue-500"
-          />
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-slate-200">
+              Username:
+            </label>
+            <Input
+              placeholder="username"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              className="rounded-lg border border-slate-700 bg-transparent px-3 py-2 text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
 
           {/* URL */}
-          <label className="text-lg font-medium text-slate-200">
-            Link/URL:
-          </label>
-          <Input
-            placeholder="default.com"
-            type="url"
-            name="url"
-            value={formData.url}
-            onChange={handleChange}
-            className="px-3 bg-slate-700 text-slate-100 placeholder-slate-400 border border-slate-600 focus:ring-2 focus:ring-blue-500"
-          />
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-slate-200">
+              Link/URL:
+            </label>
+            <Input
+              placeholder="default.com"
+              type="url"
+              name="url"
+              value={formData.url}
+              onChange={handleChange}
+              className="rounded-lg border border-slate-700 bg-transparent px-3 py-2 text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
 
           {/* Password */}
-          <label className="text-lg font-medium text-slate-200">
-            Password:
-          </label>
-          <Input
-            placeholder="********"
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            className="px-3 bg-slate-700 text-slate-100 placeholder-slate-400 border border-slate-600 focus:ring-2 focus:ring-blue-500"
-          />
+          <div className="flex flex-col gap-2">
+            <label className="text-sm font-medium text-slate-200">
+              Password:
+            </label>
+            <Input
+              placeholder="********"
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className="rounded-lg border border-slate-700 bg-transparent px-3 py-2 text-slate-100 placeholder-slate-400 focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
 
-          <div></div>
-          <Button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg shadow transition disabled:opacity-50"
-          >
+          {/* Submit Button */}
+          <Button type="submit" style={{ marginTop: "20px" }}>
             Submit
           </Button>
         </form>
       </div>
 
       {/* Saved Passwords Table */}
-      <div className="w-[600px] lg:w-[1000px]  rounded-md p-4 shadow bg-slate-800">
+      <div className="w-90 sm:w-[600px] rounded-xl border-2 border-slate-700 bg-transparent p-4 shadow inset-shadow-custom lg:w-[1000px]">
         <div
-          className="flex items-center space-x-2 mb-4 text-4xl font-medium text-gray-200 cursor-pointer"
+          className="mb-4 flex flex-row cursor-pointer items-center space-x-2 text-4xl font-medium text-gray-200"
           onClick={toggleView}
         >
-          <h2 className="text-2xl font-bold text-slate-50 mb-4">
+          <h2 className="mb-4 text-2xl font-medium text-slate-50">
             Saved Passwords
           </h2>
           {expanded ? (
-            <ChevronDown className="w-6 h-6 transition-transform duration-300" />
+            <ChevronDown className="h-6 w-6 transition-transform duration-300" />
           ) : (
-            <ChevronRight className="w-6 h-6 transition-transform duration-300" />
+            <ChevronRight className="h-6 w-6 transition-transform duration-300" />
           )}
         </div>
 
         <div
-          className={`overflow-x-auto transition-all duration-500 overflow-hidden ${
+          className={`overflow-hidden overflow-x-auto transition-all duration-500 ${
             expanded ? "max-h-screen" : "max-h-0"
           }`}
         >
-          <table className="w-full text-left text-sm text-slate-300 border border-slate-700 rounded-md overflow-hidden">
-            <thead className=" font-semibold">
+          <table className="w-full overflow-hidden rounded-md border border-slate-700 text-left text-sm text-slate-300 inset-shadow-minor">
+            <thead className="font-semibold">
               <tr>
                 <th className="px-6 py-3 text-left">#</th>
                 <th className="px-6 py-3 text-left">Name</th>
@@ -237,12 +255,12 @@ function Password() {
             </thead>
             <tbody>
               {savedPasswords.map((e, index) => (
-                <tr key={index} className="hover:bg-slate-700/40 transition">
+                <tr key={index} className="transition hover:bg-slate-700/40">
                   <td className="px-6 py-3">{index + 1}</td>
                   <td className="px-6 py-3">{e.name}</td>
                   <td className="px-6 py-3">{e.username}</td>
                   <td className="px-6 py-3">{e.url}</td>
-                  <td className="px-6 py-3 flex w-[100px] items-center gap-2">
+                  <td className="flex w-[100px] items-center gap-2 px-6 py-3">
                     <span>
                       {visiblePasswords[index] ? e.password : "•••••••••••"}
                     </span>
@@ -260,7 +278,7 @@ function Password() {
 
                   <td className="px-6 py-3">
                     <button
-                      className="text-gray-500 hover:text-gray-700 mr-2"
+                      className="mr-2 text-gray-500 hover:text-gray-700"
                       onClick={() => {
                         setEditData(e); // e is the row data
                         setIsEditModalOpen(true);
@@ -282,9 +300,9 @@ function Password() {
         </div>
       </div>
       {isEditModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-slate-700 p-6 rounded-lg w-full max-w-md">
-            <h2 className="text-xl font-semibold mb-4 text-gray-800">
+        <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
+          <div className="w-full max-w-md rounded-lg bg-slate-700 p-6">
+            <h2 className="mb-4 text-xl font-semibold text-gray-800">
               Edit Password
             </h2>
             <form onSubmit={handleEditPassword}>
@@ -295,7 +313,7 @@ function Password() {
                   setEditData({ ...editData, name: e.target.value })
                 }
                 placeholder="Name"
-                className="mb-2 p-2 w-full border rounded"
+                className="mb-2 w-full rounded border p-2"
               />
               <input
                 type="text"
@@ -304,7 +322,7 @@ function Password() {
                   setEditData({ ...editData, username: e.target.value })
                 }
                 placeholder="Username"
-                className="mb-2 p-2 w-full border rounded"
+                className="mb-2 w-full rounded border p-2"
               />
               <input
                 type="url"
@@ -313,7 +331,7 @@ function Password() {
                   setEditData({ ...editData, url: e.target.value })
                 }
                 placeholder="URL"
-                className="mb-2 p-2 w-full border rounded"
+                className="mb-2 w-full rounded border p-2"
               />
               <input
                 type="text"
@@ -322,20 +340,20 @@ function Password() {
                   setEditData({ ...editData, password: e.target.value })
                 }
                 placeholder="Password"
-                className="mb-4 p-2 w-full border rounded"
+                className="mb-4 w-full rounded border p-2"
               />
 
               <div className="flex justify-end gap-2">
                 <button
                   type="button"
                   onClick={() => setIsEditModalOpen(false)}
-                  className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400"
+                  className="rounded bg-gray-300 px-4 py-2 hover:bg-gray-400"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+                  className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
                 >
                   Save
                 </button>

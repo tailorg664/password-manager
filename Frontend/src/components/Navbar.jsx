@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../store/useAuthStore.js";
+import { Menu } from "lucide-react";
 function Navbar() {
   const [isTop, setIsTop] = React.useState(true);
-  
+  const [isMobile, setIsMobile] = React.useState(window.innerWidth <= 768);
+  const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
+  const dropdownRef = useRef(null);
   React.useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 15) {
@@ -12,16 +15,33 @@ function Navbar() {
         setIsTop(true);
       }
     };
+    const handleClickOutside = (e) => {
+      if (
+        isDropdownOpen &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
     window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("mousedown", handleClickOutside);
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isTop]);
+  }, [isTop, isDropdownOpen]);
   const navigate = useNavigate();
   function NavButton({ children, ...props }) {
     return (
       <button
-        className=" w-auto px-4 py-3 transition-all duration-200 hover:bg-blue-600/25   hover:text-xl "
+        className="w-auto px-4 py-3 transition-all duration-200 hover:bg-blue-600/25 hover:text-xl"
         {...props}
       >
         {children}
@@ -48,7 +68,29 @@ function Navbar() {
         <h1 className="bg-gradient-to-r from-blue-900 to-blue-700 bg-clip-text pl-4 text-2xl font-bold text-transparent">
           MyVault
         </h1>
-        <div className="flex items-center text-gray-800">
+        {isMobile ? (
+          <NavButton onClick={() => setIsDropdownOpen((prev) => !prev)}>
+            <Menu />
+          </NavButton>
+        ) : (
+          <div className="flex items-center text-gray-800">
+            <NavButton onClick={() => navigate("/")}>Home</NavButton>
+            <NavButton
+              onClick={() => {
+                window.scrollTo({
+                  top: document.body.scrollHeight,
+                  behavior: "smooth",
+                });
+              }}
+            >
+              About
+            </NavButton>
+            <NavButton onClick={handleClick}>{label}</NavButton>
+          </div>
+        )}
+      </div>
+      {isDropdownOpen && (
+        <div className="absolute top-16 right-10 z-50 flex flex-col rounded-lg bg-blue-300/60 p-4 backdrop-blur-sm">
           <NavButton onClick={() => navigate("/")}>Home</NavButton>
           <NavButton
             onClick={() => {
@@ -62,7 +104,7 @@ function Navbar() {
           </NavButton>
           <NavButton onClick={handleClick}>{label}</NavButton>
         </div>
-      </div>
+      )}
     </div>
   );
 }

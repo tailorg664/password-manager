@@ -35,5 +35,7 @@
       transform: rotate(3deg);
     }
   }
+  --inset-shadow-custom: inset 2px 3px 10px rgba(74, 144, 226, 0.5);
+  --inset-shadow-minor: inset 1px -2px 10px rgba(74, 144, 226, 0.5);
 
 }
