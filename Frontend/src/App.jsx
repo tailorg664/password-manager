@@ -34,11 +34,10 @@ function App() {
           />
           <Route path="/login" element={!authUser?<Login />:<Navigate to={"/password"}/>} />
           <Route path="/signup" element={!authUser?<Signup />:<Navigate to={"/password"}/>} />
-        <Route path="/password" element={!authUser?<>
+        <Route path="/password" element={authUser?<>
                    <Navbar />
                    <Password />
                  </> :<Navigate to={"/login"} replace/>}/>
-                 {/* have to change this later */}
           {/* Add more routes here as needed */}
           <Route path="*" element={<NotFound />} />
         </Routes>
