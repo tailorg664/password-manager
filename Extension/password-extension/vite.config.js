@@ -1,14 +1,20 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { __dirname, resolve } from "path";
-import tailwindcss from "tailwindcss";
-// https://vite.dev/config/
+import { fileURLToPath } from "url";
+import { dirname, resolve } from "path";
+
+// Manually define __dirname in ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [react()],
   build: {
     rollupOptions: {
       input: {
-        popup: resolve(__dirname, "popup.html"),
+        popup: resolve(__dirname, "popup.html"), // now works
+        content: resolve(__dirname, "src/content/contentScript.js"),
+        background: resolve(__dirname, "src/background/background.js"),
       },
       output: {
         entryFileNames: `[name].js`,

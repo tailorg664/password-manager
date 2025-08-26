@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "My Vault Extension",
+  "version": "1.0",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "tabs"
+  ],
+   "host_permissions": [
+    "<all_urls>",
+    "https://password-manager-hv6x.onrender.com/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
+}

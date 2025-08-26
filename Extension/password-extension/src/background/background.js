@@ -1,29 +1,38 @@
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.type === "REQUEST_CREDENTIALS") {
-    const domain = request.domain;
+let credentialsCache = null;
 
-    chrome.storage.local.get("authToken", (result) => {
-      const token = result.authToken;
-      if (!token) {
-        sendResponse({ error: "Not logged in" });
-        return;
+async function fetchCredentials() {
+  const my_token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODRkODZmMTIyYjQzMWJkZWU5YmUwMzQiLCJpYXQiOjE3NTYxMTg0NjAsImV4cCI6MTc1NjIwNDg2MH0.DhaG5YZOXh15Hl0v_QPGYqXdIwKjolfngq-3I2SfcOM";
+
+  try {
+    const res = await fetch(
+      "https://password-manager-hv6x.onrender.com/api/home/show-password",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${my_token}`,
+        },
       }
+    );
 
-      // Call your backend to get saved credentials
-      fetch(`https://localstorage:3000/api/auth/login`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          // Assuming data = { username, password }
-          sendResponse({ credentials: data });
-        })
-        .catch((err) => {
-          console.error(err);
-          sendResponse({ error: err.message });
-        });
-    });
+    const result = await res.json();
+    credentialsCache = result;
+    return result;
+  } catch (err) {
+    console.error("Error fetching credentials:", err);
+    return { data: [] };
+  }
+}
 
-    return true; // Required for async response
+// Listener for messages from content or popup
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === "GET_CREDENTIALS") {
+    if (credentialsCache) {
+      sendResponse(credentialsCache);
+    } else {
+      fetchCredentials().then((data) => sendResponse(data));
+    }
+    return true; // async response
   }
 });
