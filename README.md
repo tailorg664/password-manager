@@ -2,6 +2,8 @@
 
 A full-stack **MERN Password Manager** that securely stores credentials and supports **automatic login & form autofill** using a custom browser extension.
 
+Link to project : [Link to password manager.](https://password-manager-orpin-xi.vercel.app/)
+
 The project is built with security and usability in mind, featuring encrypted storage, protected APIs, and a modern responsive UI.
 
 🌐 Live Demo: (Vercel Frontend)  
