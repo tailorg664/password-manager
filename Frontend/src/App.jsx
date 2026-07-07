@@ -18,7 +18,7 @@ function App() {
     isCheckingAuth || isSigningUp || isLoggingIn || isLoggingOut;
   useEffect(()=>{
     checkAuth()
-  },[])
+  },[checkAuth])
   return (
     <>{shouldShowLoader && <Loading />}
       <div className={`${shouldShowLoader ? "blur-sm pointer-events-none select-none" : ""}`}>
